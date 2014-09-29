@@ -1,0 +1,157 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Getopt::Long;
+use Pod::Usage;
+
+my $op_count = 0;
+
+sub process_op_string {
+	my ($op, $ifmt, $ofmt, $args) = (@_, "", "");
+
+	while ($ifmt =~ /^([^%]*%)(.*)/) {
+		$ofmt .= $1;
+		my $rem = $2;
+		if ($rem =~ /^%(.*)/) {
+			$ofmt .= "%";
+			$ifmt = $1;
+		} elsif ($rem =~ /^(-?\d*\.?\d*)([nWPCI])(.*)/) {
+			$ofmt .= $1;
+			$ofmt .= $2 eq 'n' ? 'd' : 's';
+			$args .= $2;
+			$ifmt = $3;
+		} else {
+			die;
+		}
+	}
+
+	$ofmt .= $ifmt;
+
+	my $n = $op_count++;
+
+	return "$n:$op:$args:$ofmt";
+}
+
+my @todo;
+Getopt::Long::Configure ("bundling");
+GetOptions(
+	'p|print=s' => sub { push @todo, process_op_string(@_) },
+	'x|exec=s'  => sub { push @todo, process_op_string(@_) },
+	'h|help'    => sub {pod2usage(1) },
+	'man'       => sub {pod2usage(-exitstatus => 0, -verbose => 2) }
+) or pod2usage(2);
+
+push @todo, process_op_string("p", "%W %I") if not @todo;
+
+my %items;
+
+sub process_item {
+	my $n   = shift @_;
+	my $wo  = shift @_;
+	my $pi  = shift @_;
+	my $ci  = shift @_;
+
+	my $count = 0;
+
+	todo: for (@todo) {
+		my ($opn, $op, $args, $fmt) = split(/:/, $_, 4);
+		my %key = ( 0 => $opn );
+		my @args;
+
+		for my $arg (split(//, $args)) {
+			if ($arg eq 'n') {
+				push @args, $n;
+			} elsif ($arg eq 'W') {
+				$key{1} = $wo;
+				push @args, $wo;
+			} elsif ($arg eq 'P') {
+				$key{1} = $wo;
+				$key{2} = $pi;
+				push @args, $pi;
+			} elsif ($arg eq 'C') {
+				next todo if not $ci;
+				$key{1} = $wo;
+				$key{2} = $pi;
+				$key{3} = $ci;
+				push @args, $ci;
+			} elsif ($arg eq 'I') {
+				$key{1} = $wo;
+				$key{2} = $pi;
+				$key{3} = $ci if $ci;
+				push @args, $ci // $pi;
+			} else {
+				push @args, '<???>';
+			}
+		}
+
+		my $key = join('|', map($key{$_}, sort(keys %key)));
+		next if (exists($items{$key}));
+
+		$items{$key} = $n;
+
+		my $s = sprintf("$fmt\n", @args);
+
+		if ($op eq "p") {
+			print $s;
+		} elsif ($op eq "x") {
+			system($s);
+		}
+
+		$count += 1;
+	}
+
+	return $count;
+}
+
+sub process_report {
+	my ($wo, $pi);
+	my $n = 0;
+
+	while (<>) {
+		chomp;
+	
+		last if (/End of Report/);  # we're done
+
+		if (/Work Order:\s*(\S*)/) {
+			$wo = $1;
+			undef $pi;
+		} elsif (/Item Number:\s*(\S*)/) {
+			$pi = $1;
+			$n += 1 if process_item($n+1, $wo, $pi);
+		} elsif (/^Item Number\s/) {
+			while (<>) {
+				next if (/^-/);     # ignore horizontal rule
+				last if (/^\x0c/);  # form feed ends item list
+
+				if (/^(\S+)/) {
+					$n += 1 if process_item($n+1, $wo, $pi, $1);
+				}
+			}
+		}
+	}
+}
+
+process_report;
+
+__END__
+
+=head1 NAME
+
+picklister - read CAT pick-list report
+
+=head1 SYNOPSIS
+
+B<picklister> [OPTION]... [REPORT]...
+
+ Options:
+    --something=asdf
+
+=head1 DESCRIPTION
+
+Read  report
+
+=head1 AUTHOR
+
+Chris Rorvick <chris@rorvick.com>
