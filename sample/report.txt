@@ -1,0 +1,235 @@
+woworl01.p              16.7 Multiple WO Release/Print            Date: MM/DD/YY
+Page:    1                     MI LLC Production                  Time: HH:MM:SS
+
+
+                              WORK ORDER PICKLIST 
+
+  Work Order: 12345                                      Issue Date: MM/DD/YY
+          ID: 111111
+       Batch:
+ Item Number: 5N-7862-01            Rev: 01     Work Order Due Date: MM/DD/YY
+              TUBE ASSY
+     Remarks:                                             Sales/Job:
+ Qty Ordered: 9.0          PC                            Deliver To:
+
+                        Site     Lot/Serial             Required
+Item Number        Rev  Location Ref                Qty to Issue UM Issued
+------------------ ---- -------- ------------------ ------------ -- --------
+6L-9089-04              MTB                                  9.0 PC
+   ELBOW                   
+      ********          Quantity Not Available:              9.0    ********
+
+B140-1E839-00      00   MTB                                  9.9 FT
+   2 1/4 X .065 1E839      
+   WELD. HYD.              
+                        X-TUBE                               9.9    (      )
+
+
+woworl01.p              16.7 Multiple WO Release/Print            Date: MM/DD/YY
+Page:    1                     MI LLC Production                  Time: HH:MM:SS
+
+
+                              Work Order Routing 
+
+  Work Order: 12345
+          ID: 111111
+       Batch:
+ Item Number: 5N-7862-01            Rev: 01     Work Order Due Date: MM/DD/YY
+              TUBE ASSY
+     Remarks:                                             Sales/Job:
+ Qty Ordered: 9.0          PC                            Deliver To:
+
+
+                                         Tooling     Setup Time
+    Op Work Center              Std Op   Supplier      Run Time Actual By
+------ ------------------------ -------- -------- ------------- ------ ----
+    10 205T                                                     ______ (  )
+       CUT-OFF                                                  ______ (  )
+       CUT TO 29"
+    20 213T                                                     ______ (  )
+       CLEANING                                                 ______ (  )
+       CLEAN
+    30 206T                                                     ______ (  )
+       BENDING                                                  ______ (  )
+       BEND PER PRINT
+    40 217T                                                     ______ (  )
+       TRIM SAW                                                 ______ (  )
+       TRIM END A
+    50 213T                                                     ______ (  )
+       CLEANING                                                 ______ (  )
+       CLEAN
+    60 214T                                                     ______ (  )
+       WELDING                                                  ______ (  )
+       WELD TO 1E99
+  ONE 6L-9089,  ONE 5N-7861                                                   
+
+    70 220T                                                     ______ (  )
+       CHIP - WELD                                              ______ (  )
+       CHIP-WELD
+    80 212T                                                     ______ (  )
+       PRESSURE TEST                                            ______ (  )
+       PRESSURE TEST
+    90 213T                                                     ______ (  )
+       CLEANING                                                 ______ (  )
+       CLEAN TO 1E2500-A
+   100 221T                                                     ______ (  )
+       INSPECTION                                               ______ (  )
+       LAB TO 1E2500-A
+   110 223T                                                     ______ (  )
+       PACKAGING/SHIPPING                                       ______ (  )
+       PACK TO SHIP
+   120 222T                                                     ______ (  )
+       FINAL INSPECTION                                         ______ (  )
+       REPORT QUANTITY
+woworl01.p              16.7 Multiple WO Release/Print            Date: MM/DD/YY
+Page:    2                     MI LLC Production                  Time: HH:MM:SS
+
+
+                              Work Order Routing 
+
+  Work Order: 12345
+          ID: 111111
+       Batch:
+ Item Number: 5N-7862-01            Rev: 01     Work Order Due Date: MM/DD/YY
+              TUBE ASSY
+     Remarks:                                             Sales/Job:
+ Qty Ordered: 5.0          PC                            Deliver To:
+
+
+                                         Tooling     Setup Time
+    Op Work Center              Std Op   Supplier      Run Time Actual By
+------ ------------------------ -------- -------- ------------- ------ ----
+
+  timing revised 01-01-01 abc                                                 
+
+woworl01.p              16.7 Multiple WO Release/Print            Date: MM/DD/YY
+Page:    1                     MI LLC Production                  Time: HH:MM:SS
+
+
+                              WORK ORDER PICKLIST 
+
+  Work Order: 12346                                      Issue Date: MM/DD/YY
+          ID: 222222
+       Batch:
+ Item Number: 6L-9217-05            Rev: 05     Work Order Due Date: MM/DD/YY
+              TUBE AS
+     Remarks:                                             Sales/Job:
+ Qty Ordered: 99.0         PC                            Deliver To:
+
+                        Site     Lot/Serial             Required
+Item Number        Rev  Location Ref                Qty to Issue UM Issued
+------------------ ---- -------- ------------------ ------------ -- --------
+6N-0506-04         03   MTB                                 99.0 PC
+   FLANGE                  
+                        PSA                                 99.0    (      )
+
+
+B064-1E839-00      00   MTB                                 99.9 FT
+   1 X .065 1E839          
+   WELD. HYD.              
+                        X-TUBE                              99.9    (      )
+
+
+woworl01.p              16.7 Multiple WO Release/Print            Date: MM/DD/YY
+Page:    1                     MI LLC Production                  Time: HH:MM:SS
+
+
+                              Work Order Routing 
+
+  Work Order: 12346
+          ID: 222222
+       Batch:
+ Item Number: 6L-9217-05            Rev: 05     Work Order Due Date: MM/DD/YY
+              TUBE AS
+     Remarks:                                             Sales/Job:
+ Qty Ordered: 99.0         PC                            Deliver To:
+
+
+                                         Tooling     Setup Time
+    Op Work Center              Std Op   Supplier      Run Time Actual By
+------ ------------------------ -------- -------- ------------- ------ ----
+    10 205T                                                     ______ (  )
+       CUT-OFF                                                  ______ (  )
+       CUT TO 22 "
+    20 210T                                                     ______ (  )
+       BURRING                                                  ______ (  )
+    30 213T                                                     ______ (  )
+       CLEANING                                                 ______ (  )
+    40 216T                                                     ______ (  )
+       UPSET                                                    ______ (  )
+       UPSET #1
+    50 216T                                                     ______ (  )
+       UPSET                                                    ______ (  )
+       UPSET #2
+    60 206T                                                     ______ (  )
+       BENDING                                                  ______ (  )
+       BEND PER PRINT
+    70 217T                                                     ______ (  )
+       TRIM SAW                                                 ______ (  )
+       TRIM END D
+    80 210T                                                     ______ (  )
+       BURRING                                                  ______ (  )
+       BURR END D
+    90 207T                                                     ______ (  )
+       FORMING                                                  ______ (  )
+       SIZE END D
+   100 213T                                                     ______ (  )
+       CLEANING                                                 ______ (  )
+   110 208T                                                     ______ (  )
+       BRAZING   also Annealing                                 ______ (  )
+       BRAZE
+   120 212T                                                     ______ (  )
+       PRESSURE TEST                                            ______ (  )
+   130 213T                                                     ______ (  )
+       CLEANING                                                 ______ (  )
+   140 221T                                                     ______ (  )
+       INSPECTION                                               ______ (  )
+   150 223T                                                     ______ (  )
+       PACKAGING/SHIPPING                                       ______ (  )
+woworl01.p              16.7 Multiple WO Release/Print            Date: MM/DD/YY
+Page:    2                     MI LLC Production                  Time: HH:MM:SS
+
+
+                              Work Order Routing 
+
+  Work Order: 12346
+          ID: 222222
+       Batch:
+ Item Number: 6L-9217-05            Rev: 05     Work Order Due Date: MM/DD/YY
+              TUBE AS
+     Remarks:                                             Sales/Job:
+ Qty Ordered: 99.0         PC                            Deliver To:
+
+
+                                         Tooling     Setup Time
+    Op Work Center              Std Op   Supplier      Run Time Actual By
+------ ------------------------ -------- -------- ------------- ------ ----
+
+   160 222T                                                 0.0 ______ (  )
+       FINAL INSPECTION                                     0.0 ______ (  )
+       REPORT QTY
+
+
+                                                           End of Report
+
+
+
+
+Report Criteria:                        Report Submitted By:       abc
+
+           Work Order: 12345                To: 12346
+                   ID:                      To: 
+                Batch:                      To: 
+         Release Date:                      To: 
+          Item Number:                      To: 
+                 Site:                      To: 
+        Buyer/Planner:                      To: 
+                                   Status: R
+                                     Type: 
+                           Print Picklist: Yes
+                            Print Routing: Yes
+                     Print Co/By-Products: Yes
+                           Print Bar Code: No
+                     Move First Operation: Yes
+                    Include Phantom Items: No                  Output: WINDOW
+                                                             Batch ID: 
