@@ -122,6 +122,8 @@ sub process_report {
 			$n += 1 if process_item($n+1, $wo, $pi);
 		} elsif (/^Item Number\s/) {
 			while (<>) {
+				chomp;
+
 				next if (/^-/);     # ignore horizontal rule
 				last if (/^\x0c/);  # form feed ends item list
 
