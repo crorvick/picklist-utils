@@ -115,8 +115,14 @@ sub process_report {
 	while (<>) {
 		chomp;
 
-		my $brk = /^\x0c/;
 		my $eof = /End of Report/;
+		my $brk = ();
+
+		if (/^\x0c(.*)/) {
+			$_ = $1;
+			$brk = 1;
+			$state = 'MAIN';
+		}
 
 		if ($brk || $eof) {
 			undef @lines;
@@ -139,9 +145,7 @@ sub process_report {
 		} elsif ($state eq 'ITEM_LIST') {
 			next if (/^-/);     # ignore horizontal rule
 
-			if (/^\x0c/) {
-				$state = 'MAIN';
-			} elsif (/^(\S+)/) {
+			if (/^(\S+)/) {
 				$n += 1 if process_item($n+1, $wo, $pi, $1);
 			}
 		}
