@@ -110,10 +110,21 @@ sub process_report {
 	my $n = 0;
 	my $state = 'MAIN';
 
+	my @lines;
+
 	while (<>) {
 		chomp;
-	
-		last if (/End of Report/);  # we're done
+
+		my $brk = /^\x0c/;
+		my $eof = /End of Report/;
+
+		if ($brk || $eof) {
+			undef @lines;
+		}
+
+		last if ($eof);
+
+		push @lines, $_;
 
 		if ($state eq 'MAIN') {
 			if (/Work Order:\s*(\S*)/) {
