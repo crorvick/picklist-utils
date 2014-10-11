@@ -108,28 +108,30 @@ sub process_item {
 sub process_report {
 	my ($wo, $pi);
 	my $n = 0;
+	my $state = 'MAIN';
 
 	while (<>) {
 		chomp;
 	
 		last if (/End of Report/);  # we're done
 
-		if (/Work Order:\s*(\S*)/) {
-			$wo = $1;
-			undef $pi;
-		} elsif (/Item Number:\s*(\S*)/) {
-			$pi = $1;
-			$n += 1 if process_item($n+1, $wo, $pi);
-		} elsif (/^Item Number\s/) {
-			while (<>) {
-				chomp;
+		if ($state eq 'MAIN') {
+			if (/Work Order:\s*(\S*)/) {
+				$wo = $1;
+				undef $pi;
+			} elsif (/Item Number:\s*(\S*)/) {
+				$pi = $1;
+				$n += 1 if process_item($n+1, $wo, $pi);
+			} elsif (/^Item Number\s/) {
+				$state = 'ITEM_LIST';
+			}
+		} elsif ($state eq 'ITEM_LIST') {
+			next if (/^-/);     # ignore horizontal rule
 
-				next if (/^-/);     # ignore horizontal rule
-				last if (/^\x0c/);  # form feed ends item list
-
-				if (/^(\S+)/) {
-					$n += 1 if process_item($n+1, $wo, $pi, $1);
-				}
+			if (/^\x0c/) {
+				$state = 'MAIN';
+			} elsif (/^(\S+)/) {
+				$n += 1 if process_item($n+1, $wo, $pi, $1);
 			}
 		}
 	}
