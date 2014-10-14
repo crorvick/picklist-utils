@@ -141,7 +141,11 @@ sub process_page {
 
 	my $fh;
 	if (not exists $outfiles{$filename}) {
-		open($fh, ">", $filename);
+		if (not $filename eq '-') {
+			open($fh, ">", $filename);
+		} else {
+			$fh = *STDOUT;
+		}
 		$outfiles{$filename} = $fh;
 	} else {
 		$fh = $outfiles{$filename};
