@@ -9,6 +9,7 @@ use Pod::Usage;
 my @todo;
 my $output;
 
+my %outfiles;
 my $op_count = 0;
 
 sub process_op_string {
@@ -35,6 +36,30 @@ sub process_op_string {
 	my $n = $op_count++;
 
 	return "$n:$op:$args:$ofmt";
+}
+
+sub process_output_template {
+	my ($template, $wo, $filename) = (@_, "");
+
+	return if not $template;
+
+	while ($template =~ /^([^%]*)%(.*)/) {
+		$filename .= $1;
+		my $rem = $2;
+		if ($rem =~ /^%(.*)/) {
+			$filename .= "%";
+			$template = $1;
+		} elsif ($rem =~ /^(-?\d*\.?\d*)W(.*)/) {
+			return if not $wo;
+			my $fmt = "%$1s";
+			$filename .= sprintf("$fmt", $wo);
+			$template = $2;
+		} else {
+			die;
+		}
+	}
+
+	return ($filename . $template);
 }
 
 Getopt::Long::Configure ("bundling");
@@ -110,7 +135,21 @@ sub process_item {
 
 sub process_page {
 	my $wo = shift @_;
+	my $filename = process_output_template($output, $wo);
+
+	return if not $filename;
+
+	my $fh;
+	if (not exists $outfiles{$filename}) {
+		open($fh, ">", $filename);
+		$outfiles{$filename} = $fh;
+	} else {
+		$fh = $outfiles{$filename};
+		print $fh "\x0c";
+	}
+
 	for my $line (@_) {
+		print $fh "$line\n";
 	}
 }
 
