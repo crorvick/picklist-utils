@@ -125,6 +125,8 @@ sub process_report {
 		}
 
 		if ($brk || $eof) {
+			undef $wo;
+			undef $pi;
 			undef @lines;
 		}
 
@@ -135,7 +137,6 @@ sub process_report {
 		if ($state eq 'MAIN') {
 			if (/Work Order:\s*(\S*)/) {
 				$wo = $1;
-				undef $pi;
 			} elsif (/Item Number:\s*(\S*)/) {
 				$pi = $1;
 				$n += 1 if process_item($n+1, $wo, $pi);
