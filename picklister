@@ -6,6 +6,8 @@ use warnings;
 use Getopt::Long;
 use Pod::Usage;
 
+my @todo;
+
 my $op_count = 0;
 
 sub process_op_string {
@@ -34,7 +36,6 @@ sub process_op_string {
 	return "$n:$op:$args:$ofmt";
 }
 
-my @todo;
 Getopt::Long::Configure ("bundling");
 GetOptions(
 	'p|print=s' => sub { push @todo, process_op_string(@_) },
