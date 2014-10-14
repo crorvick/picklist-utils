@@ -212,11 +212,11 @@ __END__
 
 =head1 NAME
 
-picklister - read CAT pick-list report
+picklister-parse - read CAT pick-list report
 
 =head1 SYNOPSIS
 
-B<picklister> [OPTION]... [REPORT]...
+B<picklister-parse> [OPTION]... [REPORT]...
 
  Options:
     --something=asdf
