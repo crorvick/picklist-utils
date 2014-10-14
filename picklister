@@ -7,6 +7,7 @@ use Getopt::Long;
 use Pod::Usage;
 
 my @todo;
+my $output;
 
 my $op_count = 0;
 
@@ -40,6 +41,7 @@ Getopt::Long::Configure ("bundling");
 GetOptions(
 	'p|print=s' => sub { push @todo, process_op_string(@_) },
 	'x|exec=s'  => sub { push @todo, process_op_string(@_) },
+	'o|output=s'=> \$output,
 	'h|help'    => sub {pod2usage(1) },
 	'man'       => sub {pod2usage(-exitstatus => 0, -verbose => 2) }
 ) or pod2usage(2);
@@ -106,6 +108,12 @@ sub process_item {
 	return $count;
 }
 
+sub process_page {
+	my $wo = shift @_;
+	for my $line (@_) {
+	}
+}
+
 sub process_report {
 	my ($wo, $pi);
 	my $n = 0;
@@ -126,6 +134,7 @@ sub process_report {
 		}
 
 		if ($brk || $eof) {
+			process_page($wo, @lines);
 			undef $wo;
 			undef $pi;
 			undef @lines;
