@@ -1,0 +1,107 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Getopt::Long;
+use Pod::Usage;
+
+my @options;
+my $wm_text = '-';
+my $output;
+
+Getopt::Long::Configure ("bundling");
+GetOptions(
+	'T|text=s'       => \$wm_text,
+	'o|output=s'     => \$output,
+        'p|path=s'       => sub { push @options, '--path', $_[1] },
+        'h|help'         => sub { pod2usage(1) },
+        'man'            => sub { pod2usage(-exitstatus => 0, -verbose => 2) }
+) or pod2usage(2);
+
+my $wo = shift @ARGV or die;
+
+my $n = 0;
+for my $item (@ARGV) {
+	open my $fh_read, "-|", "picklister-image", @options, $item;
+	my $image = <$fh_read>;
+	close $fh_read;
+
+	my $this_output;
+	if ($output) {
+		if (@ARGV > 1) {
+			if ($output =~ /(.*)\.([^\.]+)/) {
+				$this_output = sprintf("$1-%03d.$2", $n);
+			} else {
+				$this_output = sprintf("$output.%03d", $n);
+			}
+		} else {
+			$this_output = $output;
+		}
+	} else {
+		$this_output = "$wo-$n.png";
+	}
+	$n += 1;
+
+	if ($image) {
+		chomp $image;
+
+		open my $fh_wm, scalar $wm_text;
+		open my $fh_write, "|-", "watermark",
+			"--output=$this_output",
+			'--rotate=rdiag',
+			'--orient=portrait',
+			$image;
+
+		while (<$fh_wm>) {
+			s/\$WORK_ORDER\$/$wo/g;
+			s/\$ITEM_NUMBER\$/$item/g;
+			print $fh_write $_;
+		}
+
+		close $fh_wm;
+		close $fh_write;
+	} else {
+		open my $fh_write, "|-", "watermark",
+			"--output=$this_output",
+			'--rotate=ldiag',
+			'--orient=portrait',
+			"612x792";
+
+		print $fh_write "w80%: $wo\n";
+		print $fh_write "w80%: NO IMAGE FOR $item\n";
+
+		close $fh_write;
+	}
+
+}
+
+__END__
+
+=head1 NAME
+
+picklister-watermark - generate watermarked image for picklist item(s)
+
+=head1 SYNOPSIS
+
+B<picklister-image> [OPTION]... ITEM...
+
+ Options:
+    --text=FILE
+    --output=FILE
+    --path=PATHS
+    
+=head1 DESCRIPTION
+
+    --text=FILE
+        Use contents of FILE for watermark text.  Default is STDIN.
+
+    --output=FILE
+        Write watermarked image to FILE.
+
+    --path=PATHS
+        Colon-separated list of paths where to look for input images.
+
+=head1 AUTHOR
+
+Chris Rorvick <chris@rorvick.com>
