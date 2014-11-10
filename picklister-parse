@@ -219,11 +219,33 @@ picklister-parse - read CAT pick-list report
 B<picklister-parse> [OPTION]... [REPORT]...
 
  Options:
-    --something=asdf
+    --print=FORMAT
+    --exec=FORMAT
+    --output=FILE
 
 =head1 DESCRIPTION
 
-Read  report
+Process pick-list per the specified operations.
+
+    --print=FORMAT
+        Print FORMAT for each occurance of unique output.  Supports the
+        following conversion specifiers:
+
+          %W - work order
+          %P - parent item number
+          %C - component item number
+          %I - item number (parent or component)
+          %n - count incremented each time FORMAT is printed
+
+    --exec=FORMAT
+        Execute FORMAT for each occurance of unique output.  Supports the
+        same conversion specifiers as --print.
+
+    --output=FILE
+        Write pick-list report text to FILE.  Reports can be split into
+        multiple files using the following conversion specifiers:
+
+          %W - work order
 
 =head1 AUTHOR
 
