@@ -1,0 +1,66 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Getopt::Long;
+use Pod::Usage;
+
+my $path = '.';
+
+Getopt::Long::Configure ("bundling");
+GetOptions(
+        'p|path=s'       => \$path,
+        'h|help'         => sub {pod2usage(1) },
+        'man'            => sub {pod2usage(-exitstatus => 0, -verbose => 2) }
+) or pod2usage(2);
+
+my %images;
+
+for my $dir (split ':', $path) {
+	opendir(my $dh, $dir) or next;
+
+	for my $file (readdir $dh) {
+		my $key;
+
+		if ($file =~ /^([^_]+)_[^_]*_([^_]*)_.*\.TIFF?$/i) {
+			my ($item, $rev) = ($1, $2);
+			$item =~ s/\W+//g;
+			$rev =~ s/\W+//g;
+			$key = uc("$item-$rev");
+		}
+
+		$images{$key} = "$dir/$file" if $key;
+	}
+
+	closedir $dh;
+}
+
+
+for my $item (@ARGV) {
+	print "$images{$item}\n" if exists $images{$item};
+}
+
+__END__
+
+=head1 NAME
+
+picklister-image - find image for picklist item(s)
+
+=head1 SYNOPSIS
+
+B<picklister-image> [OPTION]... ITEM...
+
+ Options:
+    --path=PATHS
+
+=head1 DESCRIPTION
+
+Return the path to an image corresponding to each item number.
+
+    --path=PATHS
+        Colon-separated list of paths where to look for images.
+
+=head1 AUTHOR
+
+Chris Rorvick <chris@rorvick.com>
