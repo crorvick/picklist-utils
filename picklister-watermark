@@ -84,7 +84,7 @@ picklister-watermark - generate watermarked image for picklist item(s)
 
 =head1 SYNOPSIS
 
-B<picklister-image> [OPTION]... ITEM...
+B<picklister-watermark> [OPTION]... WORK_ORDER ITEM...
 
  Options:
     --text=FILE
