@@ -38,6 +38,13 @@ for my $dir (split ':', $path) {
 
 
 for my $item (@ARGV) {
+	if ($item =~ /(.*)-([^-]+)/) {
+		my $tmp1 = $1;
+		my $tmp2 = $2;
+		$tmp1 =~ s/\W+//g;
+		$tmp2 =~ s/\W+//g;
+		$item = "$tmp1-$tmp2";
+	}
 	print "$images{$item}\n" if exists $images{$item};
 }
 
