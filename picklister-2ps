@@ -1,0 +1,49 @@
+#!/bin/sh
+
+me=`basename $0`
+
+. /etc/picklister-wm.conf
+
+job="$1"
+user="$2"
+name="$3"
+copies="$4"
+options="$5"
+data="$6"
+
+[ -n "$data" ] && exec <$data
+
+workdir=`mktemp --tmpdir --directory picklist.XXXXXXXXXX`
+
+work_orders=$(
+	./picklister-parse \
+		--print %W \
+		--exec "picklister-watermark \
+				--text=\"${WM_TEXT}\" \
+				--output=${workdir}/%W-%n-%I.png %W %I \
+				--path=\"${WM_IMAGES}\"" \
+		--output ${workdir}/%W-0-report.txt
+)
+
+for f in ${workdir}/*.txt; do
+	base=`basename $f .txt`
+	enscript --quiet --no-header --output ${workdir}/${base}.ps $f
+done
+
+for f in ${workdir}/*.png; do
+	base=`basename $f .png`
+	unset input_options
+	unset output_options
+	output_options="$output_options -units PixelsPerInch"
+	output_options="$output_options -gravity center"
+	output_options="$output_options -background white"
+	output_options="$output_options -resize 612x792"
+	output_options="$output_options -extent 612x792"
+	convert $input_options $f $output_options ${workdir}/${base}.ps
+done
+
+for wo in $work_orders; do
+	cat `ls ${workdir}/${wo}-*.ps`
+done
+
+rm -rf $workdir
