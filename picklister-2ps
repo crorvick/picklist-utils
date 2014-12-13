@@ -16,9 +16,9 @@ data="$6"
 workdir=`mktemp --tmpdir --directory picklist.XXXXXXXXXX`
 
 work_orders=$(
-	./picklister-parse \
+	picklister parse \
 		--print %W \
-		--exec "picklister-watermark \
+		--exec "picklister watermark \
 				--text=\"${WM_TEXT}\" \
 				--output=${workdir}/%W-%n-%I.png %W %I \
 				--path=\"${WM_IMAGES}\"" \

@@ -1,0 +1,59 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Getopt::Long;
+use Pod::Usage;
+
+my $libexec = '/usr/libexec/picklister';
+
+sub run {
+	my $command = shift @_;
+	my $command_bin = sprintf("$libexec/picklister-%s", $command);
+
+	if (-x "$command_bin") {
+		exec $command_bin, @_;
+	} else {
+		die "picklister: command \"$command\" not found\n";
+	}
+}
+
+my $command = shift @ARGV or die;
+
+if ($command eq 'help') {
+	if (@ARGV) {
+		run(shift @ARGV, '--man');
+	} else {
+		pod2usage(-exitstatus => 0, -verbose => 2);
+	}
+} else {
+	run($command, @ARGV);
+}
+
+__END__
+
+=head1 NAME
+
+picklister - execute picklister command
+
+=head1 SYNOPSIS
+
+B<picklister> COMMAND [OPTION]...
+
+=head1 DESCRIPTION
+
+Execute picklister command:
+
+    parse      Parse CAT picklister report.
+    watermark  Apply watermark to picklist image.
+    image      Find picklist image by item number.
+    2ps        Convert picklist report to Postscript.
+
+For information on a specific command run:
+
+    picklister help COMMAND
+
+=head1 AUTHOR
+
+Chris Rorvick <chris@rorvick.com>
