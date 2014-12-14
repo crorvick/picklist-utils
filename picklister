@@ -48,7 +48,6 @@ Execute picklister command:
     parse      Parse CAT picklister report.
     watermark  Apply watermark to picklist image.
     image      Find picklist image by item number.
-    2ps        Convert picklist report to Postscript.
 
 For information on a specific command run:
 
