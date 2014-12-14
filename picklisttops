@@ -42,8 +42,14 @@ for f in ${workdir}/*.png; do
 	convert $input_options $f $output_options ${workdir}/${base}.ps
 done
 
+case `basename $0` in
+ *tops)  filter=ps2ps ;;
+ *topdf) filter=ps2pdf ;;
+ *)      filter=ps2ps ;;
+esac
+
 for wo in $work_orders; do
 	cat `ls ${workdir}/${wo}-*.ps`
-done | ps2ps - -
+done | $filter - -
 
 rm -rf $workdir
