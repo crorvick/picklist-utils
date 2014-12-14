@@ -44,6 +44,6 @@ done
 
 for wo in $work_orders; do
 	cat `ls ${workdir}/${wo}-*.ps`
-done
+done | ps2ps - -
 
 rm -rf $workdir
