@@ -23,7 +23,7 @@ my $wo = shift @ARGV or die;
 
 my $n = 0;
 for my $item (@ARGV) {
-	open my $fh_read, "-|", "picklister image", @options, $item;
+	open my $fh_read, "-|", 'picklister', 'image', @options, $item;
 	my $image = <$fh_read>;
 	close $fh_read;
 
