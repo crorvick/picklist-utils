@@ -6,7 +6,7 @@ use warnings;
 use Getopt::Long;
 use Pod::Usage;
 
-my $libexec = '/usr/libexec/picklister';
+my $libexec = $ENV{'PICKLISTER_EXEC_PATH'} // '/usr/libexec/picklister';
 
 sub run {
 	my $command = shift @_;
