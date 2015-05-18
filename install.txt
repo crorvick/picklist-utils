@@ -1,0 +1,8 @@
+copy picklister* to /usr/libexec/picklister
+copy picklisttops to /usr/lib/cups/filter/
+
+build and install watermark
+
+setup cups with special ppd file
+share printers with samba
+
