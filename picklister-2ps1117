@@ -45,14 +45,14 @@ for f in ${workdir}/*.png; do
 	output_options="$output_options -units PixelsPerInch"
 	output_options="$output_options -gravity center"
 	output_options="$output_options -background white"
-	output_options="$output_options -adaptive-resize 4590x"
-	output_options="$output_options -adaptive-resize x5940>"
+	output_options="$output_options -adaptive-resize 6300x"
+	output_options="$output_options -adaptive-resize x9900>"
 	output_options="$output_options -density 600"
 	#output_options="$output_options -resize 2295x>"
 	#output_options="$output_options -resize x2970>"
 	#output_options="$output_options -density 300"
 	#convert $input_options $f $output_options ${workdir}/${base}.ps
-	nice convert $input_options $f $output_options ${workdir}/${base}.pcl &
+	convert $input_options $f $output_options ${workdir}/${base}.pcl &
 done
 wait
 
@@ -78,7 +78,7 @@ for wo in $work_orders; do
 	echo '\033E\033&l1S'  # reset duplex
 	cat `ls ${workdir}/${wo}-*.txt`
 	echo '\014'
-	#echo '\033E\033&l1S'  # reset duplex
+	echo '\033E\033&l1S\033&l6A'  # reset duplex - ledger paper
 	cat `ls ${workdir}/${wo}-*.pcl`
 done #| $filter - -
 

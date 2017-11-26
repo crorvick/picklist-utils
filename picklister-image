@@ -28,9 +28,22 @@ for my $dir (split ':', $path) {
 			$item =~ s/\W+//g;
 			$rev =~ s/\W+//g;
 			$key = uc("$item-$rev");
+			push @{$images{$key}}, "$dir/$file" if $key;
 		}
 
-		$images{$key} = "$dir/$file" if $key;
+		if ($file =~ /^([^-_ ]+).*\.TIFF?$/i) {
+			my ($item) = ($1);
+			$item =~ s/\W+//g;
+			$key = uc("$item");
+			push @{$images{$key}}, "$dir/$file" if $key;
+		}
+
+		if ($file =~ /^([^-_ ]+).*\.PDF$/i) {
+			my ($item) = ($1);
+			$item =~ s/\W+//g;
+			$key = uc("$item");
+			push @{$images{$key}}, "$dir/$file" if $key;
+		}
 	}
 
 	closedir $dh;
@@ -45,7 +58,11 @@ for my $item (@ARGV) {
 		$tmp2 =~ s/\W+//g;
 		$item = "$tmp1-$tmp2";
 	}
-	print "$images{$item}\n" if exists $images{$item};
+	if (exists $images{$item}) {
+		foreach $a (@{$images{$item}}) {
+			print "$a\n"
+		}
+	}
 }
 
 __END__

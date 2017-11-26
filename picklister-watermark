@@ -5,10 +5,16 @@ use warnings;
 
 use Getopt::Long;
 use Pod::Usage;
+use File::Basename;
 
 my @options;
 my $wm_text = '-';
 my $output;
+
+#foreach my $a(@ARGV) {
+#	print "$a ";
+#}
+#print "\n";
 
 Getopt::Long::Configure ("bundling");
 GetOptions(
@@ -25,7 +31,6 @@ my $n = 0;
 for my $item (@ARGV) {
 	open my $fh_read, "-|", 'picklister', 'image', @options, $item;
 	my $image = <$fh_read>;
-	close $fh_read;
 
 	my $this_output;
 	if ($output) {
@@ -43,11 +48,12 @@ for my $item (@ARGV) {
 	}
 	$n += 1;
 
+	#print $image;
 	if ($image) {
 		chomp $image;
 
 		open my $fh_wm, scalar $wm_text;
-		open my $fh_write, "|-", "watermark",
+		open my $fh_write, "|-", "/usr/local/bin/watermark",
 			"--output=$this_output",
 			'--rotate=rdiag',
 			'--orient=portrait',
@@ -62,18 +68,43 @@ for my $item (@ARGV) {
 		close $fh_wm;
 		close $fh_write;
 	} else {
-		open my $fh_write, "|-", "watermark",
-			"--output=$this_output",
-			'--rotate=ldiag',
+		if (0) {
+			open my $fh_write, "|-", "/usr/local/bin/watermark",
+				"--output=$this_output",
+				'--rotate=ldiag',
+				'--orient=portrait',
+				'/home/ryan/sample/empty.TIFF';
+
+			print $fh_write "w80%: $wo\n";
+			print $fh_write "w80%: NO IMAGE FOR $item\n";
+
+			close $fh_write;
+		}
+	}
+	while (my $image2 = <$fh_read>) {
+		my ($base, $path, $type) = fileparse($this_output, qr{\.png});
+		my $this_output2 = sprintf("%s%s-%03d.png", $path, $base, $n);
+		$n += 1;
+
+		chomp $image2;
+
+		open my $fh_wm, scalar $wm_text;
+		open my $fh_write, "|-", "/usr/local/bin/watermark",
+			"--output=$this_output2",
+			'--rotate=rdiag',
 			'--orient=portrait',
-			"612x792";
+			$image2;
 
-		print $fh_write "w80%: $wo\n";
-		print $fh_write "w80%: NO IMAGE FOR $item\n";
+		while (<$fh_wm>) {
+			s/\$WORK_ORDER\$/$wo/g;
+			s/\$ITEM_NUMBER\$/$item/g;
+			print $fh_write $_;
+		}
 
+		close $fh_wm;
 		close $fh_write;
 	}
-
+	close $fh_read;
 }
 
 __END__

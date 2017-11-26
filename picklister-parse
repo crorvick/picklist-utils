@@ -119,7 +119,7 @@ sub process_item {
 
 		$items{$key} = $n;
 
-		my $s = sprintf("$fmt\n", @args);
+		my $s = sprintf("$fmt &\n", @args);
 
 		if ($op eq "p") {
 			print $s;
