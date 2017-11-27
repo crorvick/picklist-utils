@@ -22,9 +22,9 @@ workdir=`mktemp --tmpdir --directory picklist.XXXXXXXXXX`
 
 # dos2unix
 work_orders=$(
-	cat | tee ${workdir}/orig | picklister parse \
+	cat | tee ${workdir}/orig | /usr/local/bin/picklister parse \
 		--print %W \
-		--exec "picklister watermark \
+		--exec "/usr/local/bin/picklister watermark \
 				--text=\"${WM_TEXT}\" \
 				--output=${workdir}/%W-%n-%I.png %W %I \
 				--path=\"${WM_IMAGES}\"" \
@@ -82,4 +82,4 @@ for wo in $work_orders; do
 	cat `ls ${workdir}/${wo}-*.pcl`
 done #| $filter - -
 
-#rm -rf $workdir
+rm -rf $workdir

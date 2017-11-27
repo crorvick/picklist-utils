@@ -11,10 +11,11 @@ my @options;
 my $wm_text = '-';
 my $output;
 
-#foreach my $a(@ARGV) {
-#	print "$a ";
-#}
-#print "\n";
+print STDERR "picklister-watermark ";
+foreach my $a(@ARGV) {
+	print STDERR "$a ";
+}
+print STDERR "\n";
 
 Getopt::Long::Configure ("bundling");
 GetOptions(
@@ -29,7 +30,7 @@ my $wo = shift @ARGV or die;
 
 my $n = 0;
 for my $item (@ARGV) {
-	open my $fh_read, "-|", 'picklister', 'image', @options, $item;
+	open my $fh_read, "-|", '/usr/local/bin/picklister', 'image', @options, $item;
 	my $image = <$fh_read>;
 
 	my $this_output;
@@ -73,7 +74,7 @@ for my $item (@ARGV) {
 				"--output=$this_output",
 				'--rotate=ldiag',
 				'--orient=portrait',
-				'/home/ryan/sample/empty.TIFF';
+				'/usr/local/bin/empty.TIFF';
 
 			print $fh_write "w80%: $wo\n";
 			print $fh_write "w80%: NO IMAGE FOR $item\n";

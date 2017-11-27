@@ -6,14 +6,15 @@ use warnings;
 use Getopt::Long;
 use Pod::Usage;
 
-my $libexec = $ENV{'PICKLISTER_EXEC_PATH'} // '/usr/libexec/picklister';
+#my $libexec = $ENV{'PICKLISTER_EXEC_PATH'} // '/usr/libexec/picklister';
+my $libexec = $ENV{'PICKLISTER_EXEC_PATH'} // '/usr/local/bin';
 
 sub run {
 	my $command = shift @_;
 	my $command_bin = sprintf("$libexec/picklister-%s", $command);
 
 	if (-x "$command_bin") {
-		exec $command_bin, @_;
+		exec "nice", $command_bin, @_;
 	} else {
 		die "picklister: command \"$command\" not found\n";
 	}

@@ -22,9 +22,9 @@ workdir=`mktemp --tmpdir --directory picklist.XXXXXXXXXX`
 
 # dos2unix
 work_orders=$(
-	cat | tee ${workdir}/orig | picklister parse \
+	cat | tee ${workdir}/orig | /usr/local/bin/picklister parse \
 		--print %W \
-		--exec "picklister watermark \
+		--exec "/usr/local/bin/picklister watermark \
 				--text=\"${WM_TEXT}\" \
 				--output=${workdir}/%W-%n-%I.png %W %I \
 				--path=\"${WM_IMAGES}\"" \
@@ -74,12 +74,15 @@ esac
 sed -i 's/^\x1bE//' ${workdir}/*.pcl
 sed -i 's/\x1bE$/\x0c/' ${workdir}/*.pcl
 
+#echo '\033E\033&l1S'  # reset duplex
+#echo '\033&k2G'       # FF = CR+FF
 for wo in $work_orders; do
 	echo '\033E\033&l1S'  # reset duplex
+	echo '\033&k2G'       # FF = CR+FF
+	#echo '\033&a1G'  # select next front face
 	cat `ls ${workdir}/${wo}-*.txt`
-	echo '\014'
-	#echo '\033E\033&l1S'  # reset duplex
+	echo '\033&a0G'  # select next face
 	cat `ls ${workdir}/${wo}-*.pcl`
 done #| $filter - -
 
-#rm -rf $workdir
+rm -rf $workdir

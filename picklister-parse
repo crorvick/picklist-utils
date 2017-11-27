@@ -12,6 +12,12 @@ my $output;
 my %outfiles;
 my $op_count = 0;
 
+print STDERR "picklister-parse ";
+foreach my $a(@ARGV) {
+        print STDERR "$a ";
+}
+print STDERR "\n";
+
 sub process_op_string {
 	my ($op, $ifmt, $ofmt, $args) = (@_, "", "");
 

@@ -8,6 +8,12 @@ use Pod::Usage;
 
 my $path = '.';
 
+print STDERR "picklister-image ";
+foreach my $a(@ARGV) {
+        print STDERR "$a ";
+}
+print STDERR "\n";
+
 Getopt::Long::Configure ("bundling");
 GetOptions(
         'p|path=s'       => \$path,
